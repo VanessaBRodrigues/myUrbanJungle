@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:adm="http://github.com/adminfaces"
+                template="/WEB-INF/templates/template.xhtml">
+
+    <ui:define name="title">
+        Cadastre e Compartilhe informações
+    </ui:define>
+
+    <ui:define name="body">
+        <f:metadata>
+        	<f:viewParam name="id" value="#{cadastroPlantaMB.idPlanta}" converter="javax.faces.Long"/>
+        	<f:event listener="#{cadastroPlantaMB.inicializar}" type="preRenderView"></f:event>
+        </f:metadata>
+
+       
+        <h:form id="form" prependId="false">
+            <p:focus/>
+
+			
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <div id="main-buttons" class="hidden-sm hidden-xs">
+                        <p:commandButton value="Salvar" update="@form"
+                        				 action="#{cadastroPlantaMB.salvar()}"
+                                         icon="fa fa-check" styleClass="btn-primary"/>
+                        <p:spacer width="5"/>
+
+                       
+                        <p:spacer width="5"/>
+                        <p:commandButton value="Voltar" immediate="true"
+                                         action="lista-plantas?faces-redirect=true"
+                                         process="@this"
+                                         icon="fa fa-close"/>
+                                         
+                    </div>
+                    
+                    <p:splitButton value="Salvar" update="@form"
+                                   icon="fa fa-check"
+                                   action="#{cadastroPlantaMB.salvar()}"
+                                   styleClass="hidden-md hidden-lg btn-primary">
+                        
+                        <p:separator/>
+                        <p:menuitem value="Voltar" action="lista-plantas?faces-redirect=true" process="@this"
+                                    icon="fa fa-close"/>
+                    </p:splitButton>
+
+                    
+
+                    <p:separator/>
+
+                    <div class="ui-fluid">
+                    	<p:panelGrid id="capaPanel" columns="4" layout="grid">
+                    	
+                    		<p:outputLabel value="Nome" for="nome"/>
+                    		<p:inputText id="nome" value="#{cadastroPlantaMB.planta.nome}"/>
+                    		
+                    		<p:outputLabel value="Nome Cientifico" for="nome_cientifico"/>
+                    		<p:inputText id="nome_cientifico" value="#{cadastroPlantaMB.planta.nome_cientifico}"/>
+                    		
+                    		<p:outputLabel value="Frequencia de Rega" for="frequencia_rega"/>
+                    		<p:inputText id="frequencia_rega" value="#{cadastroPlantaMB.planta.frequencia_rega}"/>
+                    		
+                    		<p:outputLabel value="Luminosidade" for="luminosidade"/>
+                    		<p:inputText id="luminosidade" value="#{cadastroPlantaMB.planta.luminosidade}"/>
+                    		
+                    		<p:outputLabel value="Frequencia de Poda" for="frequencia_poda"/>
+                    		<p:inputText id="frequencia_poda" value="#{cadastroPlantaMB.planta.frequencia_poda}"/>
+                    		
+                    		<p:outputLabel value="Solo/Fertilização" for="solo_fertilizacao"/>
+                    		<p:inputText id="solo_fertilizacao" value="#{cadastroPlantaMB.planta.solo_fertilizacao}"/>
+                    		
+                    		<p:outputLabel value="Clima/Temperatura" for="clima_temperatura"/>
+                    		<p:inputText id="clima_temperatura" value="#{cadastroPlantaMB.planta.clima_temperatura}"/>
+                    		
+                    		<p:outputLabel value="Observação" for="obs_experiencia"/>
+                    		<p:inputTextarea id="obs_experiencia" value="#{cadastroPlantaMB.planta.obs_experiencia}"/>
+                    		
+                    		<p:outputLabel value="Adiciona a URL de uma Imagem" for="imagem"/>
+                    		<p:inputTextarea id="imagem" value="#{cadastroPlantaMB.planta.url_imagem}"/>
+                    		
+                    		<p:outputLabel value="Toxidade" for="toxidade"/>                    		
+                    		 <p:selectOneRadio id="toxidade" value="#{cadastroPlantaMB.planta.toxidade}" >
+					            <f:selectItem itemLabel="Sim" itemValue="true"/>
+					            <f:selectItem itemLabel="Não" itemValue="false"/>
+					        </p:selectOneRadio>
+                    		
+                    		<p:outputLabel value="Criação" for="criacao"/>
+ 							<p:inputText id="criacao" value="#{cadastroPlantaMB.planta.dt_criaccao}" disabled="true">
+ 								<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo"/>
+ 							</p:inputText> 
+                    		
+                    
+                    		
+							
+ 							                   	
+                    	</p:panelGrid>
+                    
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,196 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:adm="http://github.com/adminfaces"
+                template="/WEB-INF/templates/template.xhtml">
+
+    <ui:define name="head-end">
+        <style type="text/css">
+            .ui-grid-row .ui-grid-col-2,
+            .ui-grid-row .ui-grid-col-10 {
+                padding: 0.5em 0;
+                margin-left: 10px;
+            }
+
+            .ui-orderlist .ui-orderlist-list {
+                height: auto;
+            }
+
+            .ui-orderlist .ui-grid-row .ui-grid-col-2,
+            .ui-orderlist .ui-grid-row .ui-grid-col-10 {
+                padding: 0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Minha Coleção
+    </ui:define>
+
+    <ui:define name="description">
+        Pesquise de acordo com os filtros 
+    </ui:define>
+
+    <ui:define name="body">
+        
+
+			<h:form>
+            	<div class="box box-primary">
+                	<div class="box-header with-border">
+                    	<p:commandButton action="cadastro-colecao?faces-redirect=true" ajax="false" icon="fa fa-plus"
+                         	            value="Novo" styleClass="btn-primary"/>
+                    	<p:spacer width="5"/>
+	                    <p:commandButton value="Excluir Selecionado(s)" icon="fa fa-trash" styleClass="btn-danger"
+	                    			     action="#{listaColecaoMB.excluirSelecionados()}"
+	                                     process="@form" update="@form"/>
+	                    <p:spacer width="5"/>
+	                   
+	                    <p:separator/>
+	                    
+	                    
+	                    <p:dataTable id="plantaTable" widgetVar="plantaTable" rows="10"
+	                    			 value="#{listaColecaoMB.exibeColecao}" var="colecao" rowKey="#{colecao.id}"
+	                    			 selection="#{listaColecaoMB.plantaSelecionadas}"	                    			 
+	                                 paginator="true" 	                                 
+	                                 paginatorPosition="bottom"	                                 
+	                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+	                                 currentPageReportTemplate=""
+	                                 rowsPerPageTemplate="5,10,15,20,30">
+	
+	
+	
+	                        <p:column selectionMode="multiple" width="5%" styleClass="align-center"/>
+	                        
+	                        <p:column headerText="Apelido"
+	                        		  filterBy="#{colecao.apelido}"
+	                        		  sortBy="#{colecao.apelido}" filterMatchMode="contains">
+	                        	<h:link value="#{colecao.apelido}" outcome="continue-cadastro-colecao.xhtml">
+	                        		<f:param name="id" value="#{colecao.id}"/>	
+	                        		<f:param name="name" value="colecao"/>	                           	
+	                        	</h:link>	                        
+	                        </p:column>	 
+	                        
+	                        <p:column headerText="Ambiente">
+	                        	<h:outputLabel value="#{colecao.ambiente}" />
+	                        </p:column>
+	                                        
+	                          <p:column headerText="Data da compra">
+	                        	<h:outputLabel value="#{colecao.dt_compra}" >
+	                        	<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+	                        	</h:outputLabel>
+	                        </p:column>
+	                        
+	                        <p:column headerText="Loja">
+	                        	<h:outputLabel value="#{colecao.loja_compra}" />
+	                        </p:column>
+	                        
+	                         <p:column headerText="Investimento">
+	                        	<h:outputLabel value="#{colecao.investimento}" />
+	                        </p:column>
+	                        
+	                        <p:column headerText="Tratada?">
+	                        	<h:outputLabel value="#{colecao.defensivo==true ? 'Sim': 'Não'}"/>
+	                        </p:column>
+	                                        
+	                          <p:column headerText="Data do ultimo defensivo">
+	                        	<h:outputLabel value="#{colecao.dt_defensivo	}" >
+	                        	<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+	                        	</h:outputLabel>
+	                        </p:column>
+	                        
+	                         <p:column headerText="Podada?">
+	                        	<h:outputLabel value="#{colecao.poda==true ? 'Sim': 'Não'}" />
+	                        </p:column>
+	                                        
+	                          <p:column headerText="Data do ultima poda">
+	                        	<h:outputLabel value="#{colecao.dt_poda}" >
+	                        	<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+	                        	</h:outputLabel>
+	                        </p:column>
+	                        
+	                         <p:column headerText="Fertilizada?">
+	                        	<h:outputLabel value="#{colecao.fertilizacao==true ? 'Sim': 'Não'}" />
+	                        </p:column>
+	                                        
+	                          <p:column headerText="Data do ultima fertilização">
+	                        	<h:outputLabel value="#{colecao.dt_fertilizacao}" >
+	                        	<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+	                        	</h:outputLabel>
+	                        </p:column>
+	                        
+	                           <p:column headerText="Qual a saude da planta?">
+	                        	<h:outputLabel value="#{colecao.statusSaude}" />
+	                        </p:column>
+	                        
+	                        <p:column headerText="Lista de Desejo">
+	                        	<h:outputLabel value="#{colecao.statusDesejo}" />
+	                        </p:column>
+	                        
+	                        
+	                        <p:column headerText="Informações da planta original">
+	                        	 <p:commandButton value="Olhar Detalhes"
+			                             oncomplete="PF('plantaSelecionadas').show()"
+	                    				 action="#{listaColecaoMB.mostrarSelecionados()}"
+	                    				 update="@(.ui-dialog)" 
+	                    				 styleClass="btn-info"
+	                                     icon="fa fa-search">
+			                            <f:param name="colecaoId" value="#{colecao.idPlanta}" />
+			                      </p:commandButton>	                        
+	                        </p:column>	 
+	                        
+	                    </p:dataTable>
+					</div>
+	            </div>
+        	</h:form>
+        	
+        	<p:dialog header="Informações adicionais sobre as plantas" widgetVar="plantaSelecionadas" height="700"
+                  	  width="500" responsive="true" styleClass="box-success">
+	            <p:dataList id="listaPlantaSelecionadas" value="#{listaColecaoMB.plantaOrginalSelecionada}" var="planta"
+	                        type="definition">
+	                                  
+		 				<div class="card">
+						    <p:panelGrid columns="2">
+						        <f:facet name="header">
+						            <p:graphicImage  width="100%"  url="#{planta.url_imagem}"/>
+						        </f:facet>
+						
+						        <h:outputText value="Name:"/>
+						        <h:outputText value="#{planta.nome}"/>
+						
+						        <h:outputText value="Nome CIentifico:"/>
+						        <h:outputText value="#{planta.nome_cientifico}"/>
+						
+						        <h:outputText value="Frequencia de Rega:"/>
+						        <h:outputText value="#{planta.frequencia_rega}"/>
+						
+						        <h:outputText value="Luminosidade:"/>
+						        <h:outputText value="#{planta.luminosidade}"/>
+						        
+						        <h:outputText value="Toxidade:"/>
+						        <h:outputText value="#{planta.toxidade ? 'Sim' : 'Não'}" />
+						
+						        <h:outputText value="Frequencia de Poda:"/>
+						        <h:outputText value="#{planta.frequencia_poda}"/>
+						        
+						         <h:outputText value="Fertilização:"/>
+						        <h:outputText value="#{planta.solo_fertilizacao}"/>
+						
+						        <h:outputText value="Clima/Temperatura:"/>
+						        <h:outputText value="#{planta.clima_temperatura}"/>
+						        
+						        <h:outputText value="Experiencia dos Usuários:"/>
+						        <h:outputText value="#{planta.obs_experiencia} "/>
+						        
+						    </p:panelGrid>
+						</div>
+
+	            </p:dataList>
+	            
+			</p:dialog>
+
+        
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:adm="http://github.com/adminfaces"
+                template="/WEB-INF/templates/template.xhtml">
+
+    <ui:define name="title">
+        Cadastre as informações adicionais
+    </ui:define>
+
+    <ui:define name="body">
+        <f:metadata>
+        	<f:viewParam name="id" value="#{cadastroColecaoMB.idObjeto}" converter="javax.faces.Long"/>
+        	<f:viewParam name="name" value="#{cadastroColecaoMB.nomeObjeto}" />
+        	<f:event listener="#{cadastroColecaoMB.inicializarCadastro}" type="preRenderView"></f:event>
+        </f:metadata>
+
+        
+        <h:form id="form" prependId="false">
+            <p:focus/>
+
+			
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <div id="main-buttons" class="hidden-sm hidden-xs">
+                        <p:commandButton value="Salvar" update="@form"
+                        				 action="#{cadastroColecaoMB.salvar}"
+                                         icon="fa fa-check" styleClass="btn-primary"/>
+                        <p:spacer width="5"/>
+
+                        <p:commandButton value="Excluir" process="@this"
+                        				 rendered="#{cadastroColecaoMB.plantaAdquirida.edicao}"
+                        				 action="#{cadastroColecaoMB.excluir}"
+                                         icon="fa fa-trash"
+                                         styleClass="btn-danger">
+                        </p:commandButton>
+                        <p:spacer width="5"/>
+                        <p:commandButton value="Voltar" immediate="true"
+                                         action="lista-colecao?faces-redirect=true"
+                                         process="@this"
+                                         icon="fa fa-close"/>
+                                         
+                    </div>
+                    
+                    <p:splitButton value="Salvar" update="@form"
+                                   icon="fa fa-check"
+                                   action="#{cadastroColecaoMB.salvar}"
+                                   styleClass="hidden-md hidden-lg btn-primary">
+                                   
+                        <p:menuitem value="Excluir"
+                        			rendered="#{cadastroColecaoMB.plantaAdquirida.edicao}"
+                        			action="#{cadastroColecaoMB.excluir}"
+                                    process="@this"
+                                    icon="fa fa-trash"/>
+                        <p:separator/>
+                        <p:menuitem value="Voltar" action="lista-colecao?faces-redirect=true" process="@this"
+                                    icon="fa fa-close"/>
+                    </p:splitButton>
+
+                    
+
+                    <p:separator/>
+
+                    <div class="ui-fluid">
+                    	<p:panelGrid id="capaPanel" columns="4" layout="grid">
+                    	
+                    		<p:outputLabel value="Nome da planta escolhida" for="nome"/>
+                    		<p:inputText id="nome" value="#{cadastroColecaoMB.planta.nome}" disabled="true"/>
+                    		
+                    		
+                    		 							                   	
+                    	</p:panelGrid>
+                    
+                    </div>
+                      <p:separator/>
+                      
+                      <div class="ui-fluid">
+                    	<p:panelGrid id="cadastroColecao" columns="4" layout="grid">
+                    	
+                    		<p:outputLabel value="Apelido da sua planta" for="apelido"  />             
+                    		<p:inputText id="apelido" value="#{cadastroColecaoMB.plantaAdquirida.apelido}" required="true" />
+                    	
+                    		<p:outputLabel value="Valor investido" for="valor_compra"  />             
+                    		<p:inputNumber id="valor_compra"  symbol="R$ " value="#{cadastroColecaoMB.plantaAdquirida.investimento}" />
+                    		
+                    		<p:outputLabel value="Data da Compra" for="data_compra"/> 
+ 							<p:inputMask id="data_compra" value="#{cadastroColecaoMB.plantaAdquirida.dt_compra}" mask="99/99/9999" >
+ 								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+ 							</p:inputMask> 
+ 							
+ 							<p:outputLabel value="Procedencia" for="procedencia"/>
+                    		<p:inputText id="procedencia" value="#{cadastroColecaoMB.plantaAdquirida.loja_compra}" />
+                    		
+                    		<p:outputLabel value="Ambiente" for="ambiente"/>
+                    		<p:inputText id="ambiente" value="#{cadastroColecaoMB.plantaAdquirida.ambiente}" />
+                    		
+                    		<p:outputLabel value="Status de Desejo" for="status_desejo"/>
+                    		<p:selectOneMenu id="status_desejo" value="#{cadastroColecaoMB.plantaAdquirida.statusDesejo}">
+							    <f:selectItem itemLabel="--Selecione--" itemValue="" noSelectionOption="true" />
+							    <f:selectItems value="#{cadastroColecaoMB.statusDesejo}" />
+							</p:selectOneMenu>
+                    		
+                    		<p:outputLabel value="Status de Saude" for="status_saude"/>
+                    		<p:selectOneMenu id="status_saude" value="#{cadastroColecaoMB.plantaAdquirida.statusSaude}" >
+							    <f:selectItem itemLabel="--Selecione--" itemValue="" noSelectionOption="true" />
+							    <f:selectItems value="#{cadastroColecaoMB.statusSaude}" />
+							</p:selectOneMenu>
+                    		
+                    		<p:outputLabel value="A planta foi Fertilizada?" for="fertilizacao"/>                    		
+	                    		 <p:selectOneRadio id="fertilizacao" value="#{cadastroColecaoMB.plantaAdquirida.fertilizacao}" >
+						            <f:selectItem itemLabel="Sim" itemValue="true"/>
+						            <f:selectItem itemLabel="Não" itemValue="false"/>
+					        </p:selectOneRadio>
+                    		
+                    		
+                    		<p:outputLabel value="Data do Fertillizante" for="data_fertilizante"/>  							
+ 							<p:inputMask id="data_fertilizante" value="#{cadastroColecaoMB.plantaAdquirida.dt_fertilizacao}" mask="99/99/9999" >
+ 								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+ 							</p:inputMask> 
+ 							
+ 							
+               
+                    		
+                    		<p:outputLabel value="A planta foi podada recentemente?" for="poda"/>                    		
+	                    		 <p:selectOneRadio id="poda" value="#{cadastroColecaoMB.plantaAdquirida.poda}" >
+						            <f:selectItem itemLabel="Sim" itemValue="true"/>
+						            <f:selectItem itemLabel="Não" itemValue="false"/>
+					        </p:selectOneRadio>
+                    		
+                    		<p:outputLabel value="Data da poda" for="data_poda"/> 
+                    		<p:inputMask id="data_poda" value="#{cadastroColecaoMB.plantaAdquirida.dt_poda}"  mask="99/99/9999" >
+ 								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+ 							</p:inputMask> 
+                    		
+                    		
+                    		
+                    		<p:outputLabel value="A planta foi tratada com defensivo recentemente?" for="defensivo"/>                    		
+	                    		 <p:selectOneRadio id="defensivo"  value="#{cadastroColecaoMB.plantaAdquirida.defensivo}" >
+						            <f:selectItem itemLabel="Sim" itemValue="true"/>
+						            <f:selectItem itemLabel="Não" itemValue="false"/>
+					        </p:selectOneRadio>
+                    		
+                    		<p:outputLabel value="Data do defensivo" for="data_defensivo"/>  							
+ 							<p:inputMask id="data_defensivo"  value="#{cadastroColecaoMB.plantaAdquirida.dt_defensivo}" mask="99/99/9999" >
+ 								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+ 							</p:inputMask> 
+                    		
+                    	
+                    		
+                    	
+                    	</p:panelGrid>
+                    
+                    
+                    </div>
+                      
+                      
+                </div>
+            </div>
+            
+			
+        </h:form>
+        
+    </ui:define>
+
+</ui:composition>

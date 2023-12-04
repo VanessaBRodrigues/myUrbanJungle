@@ -1,0 +1,143 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:adm="http://github.com/adminfaces"
+                template="/WEB-INF/templates/template.xhtml">
+
+    <ui:define name="head-end">
+        <style type="text/css">
+            .ui-grid-row .ui-grid-col-2,
+            .ui-grid-row .ui-grid-col-10 {
+                padding: 0.5em 0;
+                margin-left: 10px;
+            }
+
+            .ui-orderlist .ui-orderlist-list {
+                height: auto;
+            }
+
+            .ui-orderlist .ui-grid-row .ui-grid-col-2,
+            .ui-orderlist .ui-grid-row .ui-grid-col-10 {
+                padding: 0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+       Plantas
+    </ui:define>
+
+    <ui:define name="description">
+        Pesquise de acordo com os filtros 
+    </ui:define>
+
+    <ui:define name="body">
+
+			<h:form>
+            	<div class="box box-primary">
+                	<div class="box-header with-border">
+                    	<p:commandButton action="cadastro-planta?faces-redirect=true" ajax="false" icon="fa fa-plus"
+                         	            value="Novo" styleClass="btn-primary"/>
+                    	<p:spacer width="5"/>
+	                    
+	                    <p:spacer width="5"/>
+	                    <p:commandButton value="Olhar Selecionado(s)" 
+	                    				 oncomplete="PF('plantaSelecionadas').show()"
+	                    				 update="@(.ui-dialog)" 
+	                    				 styleClass="btn-info"
+	                                     icon="fa fa-search"/>
+	                    <p:separator/>
+	                    
+	                    
+	                    <p:dataTable id="plantaTable" widgetVar="plantaTable" rows="10"
+	                    			 value="#{listaPlantaMB.plantas}" var="planta" rowKey="#{planta.id}"
+	                    			 selection="#{listaPlantaMB.plantaSelecionadas}"	                    			 
+	                                 paginator="true" 	                                 
+	                                 paginatorPosition="bottom"	                                 
+	                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+	                                 currentPageReportTemplate=""
+	                                 rowsPerPageTemplate="5,10,15,20,30">
+	
+	
+	
+	                        <p:column selectionMode="multiple" width="5%" styleClass="align-center"/>
+	                        
+	                        <p:column headerText="Nome"
+	                        		  filterBy="#{planta.nome}"
+	                        		  sortBy="#{planta.nome}" filterMatchMode="contains">
+	                        	<h:link value="#{planta.nome}" outcome="cadastro-planta.xhtml">
+	                        		<f:param name="id" value="#{planta.id}"/>	                        	
+	                        	</h:link>	                        
+	                        </p:column>	 
+	                        
+	                        <p:column headerText="Nome Cientifico"
+	                        	      filterBy="#{planta.nome_cientifico}"
+	                        		  sortBy="#{planta.nome_cientifico}" filterMatchMode="contains">
+	                        	<h:outputLabel value="#{planta.nome_cientifico}" />
+	                        </p:column>
+	                                        
+	                          <p:column headerText="Data do Cadastro">
+	                        	<h:outputLabel value="#{planta.dt_criaccao}" >
+	                        	<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Sao_Paulo"/>
+	                        	</h:outputLabel>
+	                        </p:column>
+	                         
+	                                                             
+	                        
+	                        	
+	                    </p:dataTable>
+					</div>
+	            </div>
+        	</h:form>
+        	
+        	<p:dialog header="Informações adicionais sobre as plantas" widgetVar="plantaSelecionadas" height="700"
+                  	  width="500" responsive="true" styleClass="box-success">
+	            <p:dataList id="listaPlantaSelecionadas" value="#{listaPlantaMB.plantaSelecionadas}" var="planta"
+	                        type="definition">
+	                                  
+		 				<div class="card">
+						    <p:panelGrid columns="2">
+						        <f:facet name="header">
+						            <p:graphicImage width="100%" url="#{planta.url_imagem}"/>
+						        </f:facet>
+						
+						        <h:outputText value="Name:"/>
+						        <h:outputText value="#{planta.nome}"/>
+						
+						        <h:outputText value="Nome CIentifico:"/>
+						        <h:outputText value="#{planta.nome_cientifico}"/>
+						
+						        <h:outputText value="Frequencia de Rega:"/>
+						        <h:outputText value="#{planta.frequencia_rega}"/>
+						
+						        <h:outputText value="Luminosidade:"/>
+						        <h:outputText value="#{planta.luminosidade}"/>
+						        
+						        <h:outputText value="Toxidade:"/>
+						        <h:outputText value="#{planta.toxidade ? 'Sim' : 'Não'}" />
+						
+						        <h:outputText value="Frequencia de Poda:"/>
+						        <h:outputText value="#{planta.frequencia_poda}"/>
+						        
+						         <h:outputText value="Fertilização:"/>
+						        <h:outputText value="#{planta.solo_fertilizacao}"/>
+						
+						        <h:outputText value="Clima/Temperatura:"/>
+						        <h:outputText value="#{planta.clima_temperatura}"/>
+						        
+						        <h:outputText value="Experiencia dos Usuários:"/>
+						        <h:outputText value="#{planta.obs_experiencia} "/>
+						        
+						    </p:panelGrid>
+						</div>
+
+	            </p:dataList>
+	            
+			</p:dialog>
+
+        
+    </ui:define>
+
+</ui:composition>
